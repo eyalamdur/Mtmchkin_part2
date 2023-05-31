@@ -13,7 +13,7 @@ public:
     /* C'tor of Node class - 1 param.
     * @param item - item which the node will contain.
     * @return a new instance of Node. */
-    Node(T* item);
+    Node(T item);
 
     /* D'tor of Node class. */
     ~Node();
@@ -26,29 +26,30 @@ public:
     /* Sets the Node item to given one. 
     * @param item - item which the node will contain.
     * @return void. */
-    void setItem(T* item);
+    void setItem(const T& item);
 
     /* Sets the Node back pointer to given one. 
      * @param back - Node pointer which this node will now contain in its back pointer.
      * @return void. */
-    void setBack(Node& back);
+    void setBack(Node<T>& back);
 
     /* Sets the Node front pointer to given one. 
      * @param front - Node pointer which this node will now contain in its front pointer.
      * @return void. */
-    void setFront(Node& front);
+    void setFront(Node<T>& front);
 
     /* returns the Node item. */
-    T* getItem();
+    T& getItem() const;
 
     /* returns the Node back pointer. */
-    Node<T>* getBack();
+    Node<T>& getBack() const;
 
     /* returns the Node front pointer. */
-    Node<T>* getFront();
+    Node<T>& getFront() const;
 
-    /* Here we are explicitly telling the compiler to use the default methods*/
+    /* Here we are the operators of this class*/
     Node& operator=(const Node& other) = default;
+    bool operator==(const Node& other) const;
 
 private:
     T* m_item;
@@ -67,12 +68,12 @@ Node<T>::Node(){
 }
 
 /* C'tor of Node class - 1 param.
- * @param item - item which the node will contain.
- * @return a new instance of Node. */
+* @param item - item which the node will contain.
+* @return a new instance of Node. */
 template <class T>
-Node<T>::Node(T* item){
+Node<T>::Node(T item){
     T* newItem = new T;
-    *newItem = *item;
+    *newItem = item;
     this->m_item = newItem;
     this->m_front = NULL;
     this->m_back = NULL;
@@ -81,7 +82,7 @@ Node<T>::Node(T* item){
 /* D'tor of Node class. */
 template <class T>
 Node<T>::~Node(){
-    if (this->m_item){
+    if (this != NULL && this->m_item != NULL){
         delete(this->m_item);
     }
     return;
@@ -91,8 +92,11 @@ Node<T>::~Node(){
  * @param back - item which the node will contain.
  * @return void. */
 template <class T>
-void Node<T>::setItem(T* item){
-    this->m_item = item;
+void Node<T>::setItem(const T& item){
+    if (!this->m_item){
+        this->m_item = new T;
+    }
+    *this->m_item = item;
     return;
 }
 
@@ -116,24 +120,25 @@ void Node<T>::setFront(Node& front){
 
 /* returns the Node item. */
 template <class T>
-T* Node<T>::getItem(){
-    if (!this){
-        return NULL;
-    }
-    return this->m_item;
+T& Node<T>::getItem() const{
+    return *this->m_item;
 }
 
 /* returns the Node back pointer. */
 template <class T>
-Node<T>* Node<T>::getBack(){
-    return this->m_back;
+Node<T>& Node<T>::getBack() const{
+    return *this->m_back;
 }
 
 /* returns the Node front pointer. */
 template <class T>
-Node<T>* Node<T>::getFront(){
-    return this->m_front;
+Node<T>& Node<T>::getFront() const{
+    return *this->m_front;
 }
 
+template<class T>
+bool Node<T>::operator==(const Node& other) const {
+    return this == &other;
+} 
 
 #endif //EX3_NODE_H
