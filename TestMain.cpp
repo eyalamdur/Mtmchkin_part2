@@ -1,6 +1,4 @@
-
 #include <functional>
-
 #include "TestUtils.h"
 
 namespace HealthPointsTests {

@@ -1,6 +1,5 @@
 
 #include <sstream>
-
 #include "HealthPoints.h"
 
 namespace HealthPointsTests {

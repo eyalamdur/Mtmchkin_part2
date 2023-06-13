@@ -50,7 +50,8 @@ public:
     /* Here we are the operators of this class*/
     Node& operator=(const Node& other) = default;
     bool operator==(const Node& other) const;
-
+    
+    class InvalidNodePointer{};
 private:
     T* m_item;
     Node* m_front;
@@ -72,18 +73,35 @@ Node<T>::Node(){
 * @return a new instance of Node. */
 template <class T>
 Node<T>::Node(T item){
-    T* newItem = new T;
-    *newItem = item;
-    this->m_item = newItem;
-    this->m_front = NULL;
-    this->m_back = NULL;
+    try{
+        T* newItem = new T;
+        try{
+            *newItem = item;
+            this->m_item = newItem;
+            this->m_front = NULL;
+            this->m_back = NULL;
+        }
+        catch(...){
+            delete(newItem);
+            throw;
+        }
+    }
+    catch(...){
+        throw;
+    }
 }
 
 /* D'tor of Node class. */
 template <class T>
 Node<T>::~Node(){
-    if (this != NULL && this->m_item != NULL){
-        delete(this->m_item);
+    try{
+        if (this->m_item != NULL){
+            delete(this->m_item);
+            this->m_item = NULL;
+        }
+    }
+    catch(...){
+        return;
     }
     return;
 }
@@ -127,7 +145,16 @@ T& Node<T>::getItem() const{
 /* returns the Node back pointer. */
 template <class T>
 Node<T>& Node<T>::getBack() const{
-    return *this->m_back;
+    // Invalid Node Pointer case
+    try{
+        if (!(this == NULL)){
+            return *this->m_back;
+        }
+        throw (Node::InvalidNodePointer());
+    }
+    catch(...){
+        throw (Node::InvalidNodePointer());
+    }
 }
 
 /* returns the Node front pointer. */

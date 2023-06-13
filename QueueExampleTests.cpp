@@ -98,7 +98,6 @@ bool testExceptions()
 bool testConstQueue()
 {
 	bool testResult = true;
-
 	Queue<int> queue5;
 	for (int i = 1; i <= 5; i++) {
 		queue5.pushBack(42);
