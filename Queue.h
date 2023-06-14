@@ -211,7 +211,7 @@ void Queue<T>::popFront(){
     if (this->m_size == 0){
         throw(Queue::EmptyQueue());
     }
-
+    
     // Remove front and delete it
     Node<T>* temp = this->m_front;
     this->m_front = &this->m_front->getBack();

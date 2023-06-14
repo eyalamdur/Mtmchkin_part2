@@ -3,5 +3,6 @@
 
 #include "../HealthPoints.h"
 #include "../Queue.h"
+#include "../Node.h"
 
 #endif // RELATIVE_INCLUDES_EXE3_TESTS

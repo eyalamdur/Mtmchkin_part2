@@ -143,7 +143,6 @@ TEST_CASE("Queue Basics")
 
         REQUIRE_THROWS_AS(q.front(), Queue<int>::EmptyQueue);
         REQUIRE_THROWS_AS(q.popFront(), Queue<int>::EmptyQueue);
-        std::cout << q.size() << std::endl;
     }
 
     SECTION("vector Queue"){

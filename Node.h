@@ -142,7 +142,8 @@ template <class T>
 Node<T>& Node<T>::getBack() const{
     // Invalid Node Pointer case
     try{
-        if (!(this == NULL)){
+        bool isNull = (this == nullptr);
+        if (!isNull){
             return *this->m_back;
         }
         throw (Node::InvalidNodePointer());
