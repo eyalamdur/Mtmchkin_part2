@@ -109,7 +109,7 @@ Queue<T>::Queue(){
 /* D'tor of Queue class. */
 template <class T>
 Queue<T>::~Queue(){
-    while (this->m_front){
+    while (this->m_size != 0){
         popFront();
     }
     return;
@@ -122,6 +122,8 @@ template <class T>
 Queue<T>::Queue(const Queue& queue){
     this->m_front = NULL;
     this->m_back = NULL;
+    this->m_size = 0;
+
     for (Node<T> item : queue){
         this->pushBack(item.getItem());
     }
@@ -132,23 +134,30 @@ Queue<T>::Queue(const Queue& queue){
  * @return a new instance of Queue with copied values as the given Queue. */
 template <class T>
 Queue<T>& Queue<T>::operator=(const Queue<T>& other){
+    // Check if the assignment is leagl
+    Queue<T> temp;
     try{
-        // Check if the assignment is leagl
-        Queue<T> temp;
-        for (Node<T> item : other){
-            temp.pushBack(item.getItem());
+        for (T item : other){
+            temp.pushBack(item);
         }
 
-        // If so - assign
+        // If so empty old queue (if exist) and assign new one
+        if (this->m_size != 0){
+            while (this->m_front){
+                popFront();
+            }
+        }
         this->m_back = NULL;
         this->m_front = NULL;
-        for (Node<T> item : other){
-            this->pushBack(item.getItem());
+        this->m_size = 0;
+        for (T item : other){
+            this->pushBack(item);
         }
         return *this;
     }
     catch(...){
-        throw (std::bad_alloc());
+        temp.~Queue();
+        throw;
     }
 }
 
@@ -157,28 +166,24 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& other){
  * @return void. */
 template <class T>
 void Queue<T>::pushBack(T item){
+    Node<T> *newItem = new Node<T>;
     try{
-        Node<T> *newItem = new Node<T>;
-        try{
-            newItem->setItem(item);
-            if (this->m_front == NULL){
-                this->m_front = newItem;
-            }
-            if (this->m_back){
-                this->m_back->setBack(*newItem);
-                newItem->setFront(*this->m_back);
-            }
-            this->m_back = newItem;
-            this->m_size++;
+        newItem->setItem(item);
+        if (this->m_front == NULL){
+            this->m_front = newItem;
         }
-        catch(...){
-            delete(newItem);
-            throw;
+        if (this->m_back){
+            this->m_back->setBack(*newItem);
+            newItem->setFront(*this->m_back);
         }
+        this->m_back = newItem;
+        this->m_size++;
+        return;
     }
     catch(...){
+        delete(newItem);
         throw;
-    }    
+    }
 }
 
 template <class T>
@@ -358,9 +363,9 @@ T& Queue<T>::ConstIterator::operator*(){
 template <class T, typename Functor>
 Queue<T> filter(const Queue<T>& queue, Functor filterFunction){
     Queue<T> newQueue;
-    for (Node<T> item : queue){
-        if (filterFunction(item.getItem())){
-            newQueue.pushBack(item.getItem());
+    for (T item : queue){
+        if (filterFunction(item)){
+            newQueue.pushBack(item);
         }
     }
     return newQueue;

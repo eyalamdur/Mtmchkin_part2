@@ -30,8 +30,8 @@ class HealthPoints {
         /* Addition operator of HealthPoints class.
          * @param healthPointsAddition - int that represent hp to add.
          * @return reference to the new HealthPoints with added hp values. */
-        HealthPoints& operator+(int healthPointsAddition);
-        friend HealthPoints& operator+(int healthPointsAddition, HealthPoints& currentHealthPoints);
+        HealthPoints operator+(int healthPointsAddition);
+        friend HealthPoints operator+(int healthPointsAddition, HealthPoints& currentHealthPoints);
         
         /* Addition and assignment operator of HealthPoints class.
          * @param healthPointsAddition - int that represent hp to add.
@@ -41,7 +41,7 @@ class HealthPoints {
         /* Subtraction operator of HealthPoints class.
          * @param healthPointsAddition - int that represent hp to remove.
          * @return reference to the new HealthPoints with removed hp values. */
-        HealthPoints& operator-(int healthPointsSubtraction);
+        HealthPoints operator-(int healthPointsSubtraction);
 
         /* Subtraction and assignment operator of HealthPoints class.
          * @param healthPointsSubtraction - int that represent hp to remove.

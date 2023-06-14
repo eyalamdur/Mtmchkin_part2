@@ -143,6 +143,7 @@ TEST_CASE("Queue Basics")
 
         REQUIRE_THROWS_AS(q.front(), Queue<int>::EmptyQueue);
         REQUIRE_THROWS_AS(q.popFront(), Queue<int>::EmptyQueue);
+        std::cout << q.size() << std::endl;
     }
 
     SECTION("vector Queue"){
@@ -383,6 +384,7 @@ TEST_CASE("Queue Advanced")
         {
             return hp > 7;
         };
+
         Queue<HealthPoints> filterHealthQ = filter(healthyQ, isGreaterThen7);
         readQueue(result, filterHealthQ);
         expected = "{8(8), 9(9)}";
@@ -415,7 +417,7 @@ TEST_CASE("Queue Advanced")
         readQueue(result, healthyQ);
         expected = "{3(5), 4(6), 5(7), 6(8), 7(9), 10(12)}";
         REQUIRE(result == expected);
-        
+
         healthyQ.pushBack(filterHealthQ.front());
         readQueue(result, healthyQ);
         expected = "{3(5), 4(6), 5(7), 6(8), 7(9), 10(12), 9(9)}";
@@ -431,7 +433,6 @@ TEST_CASE("Queue Advanced")
         REQUIRE(result == expected);
 
         filterHealthQ = filter(healthyQ, isGreaterThen7);
-
         readQueue(result, filterHealthQ);
         expected = "{8(12)}";
         REQUIRE(result == expected);
@@ -439,5 +440,6 @@ TEST_CASE("Queue Advanced")
         readQueue(result, healthyQ);
         expected = "{1(5), 2(6), 3(7), 4(8), 5(9), 8(12), 7(9)}";
         REQUIRE(result == expected);
+        
     }
 }

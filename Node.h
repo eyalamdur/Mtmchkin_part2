@@ -73,20 +73,15 @@ Node<T>::Node(){
 * @return a new instance of Node. */
 template <class T>
 Node<T>::Node(T item){
+    T* newItem = new T;
     try{
-        T* newItem = new T;
-        try{
-            *newItem = item;
-            this->m_item = newItem;
-            this->m_front = NULL;
-            this->m_back = NULL;
-        }
-        catch(...){
-            delete(newItem);
-            throw;
-        }
+        *newItem = item;
+        this->m_item = newItem;
+        this->m_front = NULL;
+        this->m_back = NULL;
     }
     catch(...){
+        delete(newItem);
         throw;
     }
 }

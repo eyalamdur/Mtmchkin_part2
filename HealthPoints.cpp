@@ -4,37 +4,39 @@
 /* C'tor of HealthPoints class - 1 param.
  * @param maxHealthPoints - how many max health points.
  * @return a new instance of HealthPoints. */
-HealthPoints::HealthPoints(int maxValue){
+HealthPoints::HealthPoints(int maxValue) : m_maxHealthPoints(maxValue), m_healthPoints(maxValue){
     // If the input is below zero.
     if(maxValue <= 0){                           
         throw HealthPoints::InvalidArgument();
     }
-    m_maxHealthPoints = maxValue;
-    m_healthPoints = maxValue;
 }
 
 /*Addition operator*/
-HealthPoints& HealthPoints::operator+(int healthPointsAddition){
-    return HealthPoints(*this) += healthPointsAddition;
+HealthPoints HealthPoints::operator+(int healthPointsAddition){
+    HealthPoints temp(*this);
+    temp += healthPointsAddition;
+    return temp;
 }
 
 /*Addition operator*/
-HealthPoints& operator+(int healthPointsAddition, HealthPoints& currentHealthPoints){
-    return HealthPoints(currentHealthPoints) += healthPointsAddition;
+HealthPoints operator+(int healthPointsAddition, HealthPoints& currentHealthPoints){
+    HealthPoints temp(currentHealthPoints);
+    temp += healthPointsAddition;
+    return temp;
 }
 
 /*Addition and assigning operator*/
 HealthPoints& HealthPoints::operator+=(int healthPointsAddition){
-    if(m_healthPoints + healthPointsAddition >= m_maxHealthPoints){
-        m_healthPoints = m_maxHealthPoints;
+    if(this->m_healthPoints + healthPointsAddition >= this->m_maxHealthPoints){
+        this->m_healthPoints = this->m_maxHealthPoints;
     }
 
-    else if(m_healthPoints + healthPointsAddition <= MIN_HEALTH_POINTS ){
-        m_healthPoints = MIN_HEALTH_POINTS;
+    else if(this->m_healthPoints + healthPointsAddition <= MIN_HEALTH_POINTS ){
+        this->m_healthPoints = MIN_HEALTH_POINTS;
     }
 
     else{
-        m_healthPoints = m_healthPoints+healthPointsAddition;
+        this->m_healthPoints = this->m_healthPoints + healthPointsAddition;
     }
 
     return *this;
@@ -42,24 +44,25 @@ HealthPoints& HealthPoints::operator+=(int healthPointsAddition){
 
 /*Subtraction and assigning operator*/
 HealthPoints& HealthPoints::operator-=(int healthPointsSubtraction){
-    if(m_healthPoints - healthPointsSubtraction>= m_maxHealthPoints){
-        m_healthPoints = m_maxHealthPoints;
+    if(this->m_healthPoints - healthPointsSubtraction >= this->m_maxHealthPoints){
+        this->m_healthPoints = this->m_maxHealthPoints;
     }
 
-    else if(m_healthPoints - healthPointsSubtraction<=MIN_HEALTH_POINTS){
-        m_healthPoints = MIN_HEALTH_POINTS;
+    else if(this->m_healthPoints - healthPointsSubtraction <= MIN_HEALTH_POINTS){
+        this->m_healthPoints = MIN_HEALTH_POINTS;
     }
 
     else{
-        m_healthPoints =m_healthPoints-healthPointsSubtraction;
+        this->m_healthPoints -= healthPointsSubtraction;
     }
-
     return *this;
 }
 
 /*Subtraction operator*/
-HealthPoints& HealthPoints::operator-(int healthPointsSubtraction){
-    return HealthPoints(*this) -= healthPointsSubtraction;
+HealthPoints HealthPoints::operator-(int healthPointsSubtraction){
+    HealthPoints temp(*this);
+    temp -= healthPointsSubtraction;
+    return temp;
 }
 
 /*comparison operators- checks whether the two HPs are equal or not.*/
